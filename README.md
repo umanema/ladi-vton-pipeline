@@ -3,38 +3,54 @@
 ## Installation
 
 ### Openpose
+
 ```
+git submodule update --init --recursive --remote
+
+mkdir openpose/build/
+
+cd openpose/build
+
 cmake \
-BUILD_CAFFE=ON \
-BUILD_DOCS=OFF \
-BUILD_EXAMPLES=ON \
-BUILD_PYTHON=OFF \
-BUILD_SHARED_LIBS=ON \
-BUILD_UNITY_SUPPORT=OFF \
-CMAKE_BUILD_TYPE=Release \
-CMAKE_INSTALL_PREFIX=/usr/local \
-CUDA_ARCH=Auto \
-CUDA_HOST_COMPILER=/usr/bin/cc \
-CUDA_TOOLKIT_ROOT_DIR=/home/nsynk/anaconda3/envs/mega-vton \
-CUDA_USE_STATIC_CUDA_RUNTIME=ON \
-CUDA_CUDART_LIBRARY=/home/nsynk/anaconda3/envs/mega-vton/lib/libcudart.so \
-Caffe_INCLUDE_DIRS:PATH=/usr/local/include/caffe \
-Caffe_LIBS:FILEPATH=/usr/local/lib/libcaffe.dylib \
-DL_FRAMEWORK:STRING=CAFFE \
-DOWNLOAD_BODY_25_MODEL:BOOL=ON \
-DOWNLOAD_BODY_COCO_MODEL:BOOL=OFF \
-DOWNLOAD_BODY_MPI_MODEL:BOOL=OFF \
-DOWNLOAD_FACE_MODEL:BOOL=ON \
-DOWNLOAD_HAND_MODEL:BOOL=ON \
-GPU_MODE:STRING="CUDA" \
-INSTRUCTION_SET:STRING=NONE \
-OpenCV_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/opencv4 \
-PROFILER_ENABLED:BOOL=OFF \
-USE_CUDNN:BOOL=OFF \
-WITH_3D_RENDERER:BOOL=OFF \
-WITH_CERES:BOOL=OFF \
-WITH_EIGEN:STRING=NONE\
-WITH_FLIR_CAMERA:BOOL=OFF \
-WITH_OPENCV_WITH_OPENGL:BOOL=OFF \
+-D BUILD_CAFFE=ON \
+-D BUILD_DOCS=OFF \
+-D BUILD_EXAMPLES=ON \
+-D BUILD_PYTHON=OFF \
+-D BUILD_SHARED_LIBS=ON \
+-D BUILD_UNITY_SUPPORT=OFF \
+-D CMAKE_BUILD_TYPE=Release \
+-D CMAKE_INSTALL_PREFIX=/usr/local \
+-D CUDA_ARCH=Auto \
+-D CUDA_HOST_COMPILER=/usr/bin/cc \
+-D CUDA_TOOLKIT_ROOT_DIR=/home/nsynk/anaconda3/envs/mega-vton \
+-D CUDA_USE_STATIC_CUDA_RUNTIME=ON \
+-D CUDA_CUDART_LIBRARY=/home/nsynk/anaconda3/envs/mega-vton/lib/libcudart.so \
+-D DL_FRAMEWORK=CAFFE \
+-D DOWNLOAD_BODY_25_MODEL=ON \
+-D DOWNLOAD_BODY_COCO_MODEL=OFF \
+-D DOWNLOAD_BODY_MPI_MODEL=OFF \
+-D DOWNLOAD_FACE_MODEL=ON \
+-D DOWNLOAD_HAND_MODEL=ON \
+-D GPU_MODE="CUDA" \
+-D INSTRUCTION_SET=NONE \
+-D OpenCV_DIR=/usr/lib/x86_64-linux-gnu/cmake/opencv4 \
+-D PROFILER_ENABLED=OFF \
+-D USE_CUDNN=OFF \
+-D WITH_3D_RENDERER=OFF \
+-D WITH_CERES=OFF \
+-D WITH_EIGEN=NONE\
+-D WITH_FLIR_CAMERA=OFF \
+-D WITH_OPENCV_WITH_OPENGL=OFF \
 -S ../ -B ./
+
+make -j`nproc`
+```
+### Human Parse
+
+```
+python3 -m pip install nvidia-cudnn-cu11==8.6.0.163 tensorflow==2.12.*
+mkdir -p $CONDA_PREFIX/etc/conda/activate.d
+echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
+echo 'export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
+source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 ```
