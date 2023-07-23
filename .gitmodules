@@ -1,0 +1,12 @@
+[submodule "CIHP_PGN"]
+	path = CIHP_PGN
+	url = https://github.com/Engineering-Course/CIHP_PGN.git
+[submodule "detectron2"]
+	path = detectron2
+	url = https://github.com/umanema/detectron2.git
+[submodule "openpose"]
+	path = openpose
+	url = https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
+[submodule "ladi-vton"]
+	path = ladi-vton
+	url = https://github.com/miccunifi/ladi-vton.git
