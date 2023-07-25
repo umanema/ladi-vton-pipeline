@@ -1,3 +1,6 @@
+cd ~/repositories
+git submodule update --init --recursive --remote
+
 #install miniconda
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 bash ~/miniconda.sh -b -p $HOME/miniconda
@@ -26,12 +29,6 @@ mkdir -p $CONDA_PREFIX/etc/conda/activate.d
 echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 echo 'export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-
-#prepare repository
-mkdir repositories
-git clone https://github.com/umanema/ladi-vton-pipeline.git
-cd ~/repositories
-git submodule update --init --recursive --remote
 
 mkdir ~/repositories/ladi-vton-pipeline/auto-vton/input/cloth
 mkdir ~/repositories/ladi-vton-pipeline/auto-vton/input/person

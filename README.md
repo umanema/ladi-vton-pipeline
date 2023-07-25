@@ -1,10 +1,23 @@
 # ladi-vton-pipeline
 
+
+## Installation
+
+Get the repository
 ```
+mkdir repositories
+cd ~/repositories
+git clone https://github.com/umanema/ladi-vton-pipeline.git
+git submodule update --init --recursive
+```
+You can either use an installation script 
+```
+cd ~/repositories/ladi-vton-pipeline/auto-vton
+bash install.sh
+```
+Or do everything yourself with CLI
 
-#install build dependencies
-sudo apt-get -qq install -y libatlas-base-dev libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev opencl-headers ocl-icd-opencl-dev libviennacl-dev libboost-all-dev
-
+```
 #install miniconda
 
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
@@ -12,61 +25,59 @@ bash ~/miniconda.sh -b -p $HOME/miniconda
 eval "$(~/miniconda3/bin/conda shell.bash hook)"
 conda init
 
+#install carvekit before everything else
+pip install carvekit
+
 #install cuda and cudnn
+
 sudo apt-get install linux-headers-$(nsynk -r)
 sudo apt-key del 7fa2af80
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
-
-sudo bash -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
-sudo bash -c 'echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda_learn.list'
-sudo apt update
-
-sudo apt-get install cuda-10-2
-
-sudo apt-get install libcudnn7
-sudo apt-get install libcudnn7-dev
-
-wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.2_20191118/cudnn-10.2-linux-x64-v7.6.5.32.tgz
+sudo apt-get update
+sudo apt-get install cuda-11-8
 
 #install tensorflow
 
-conda install -c "nvidia/label/cuda-10.2.0" cuda-toolkit
+conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit
 python -m pip install nvidia-cudnn-cu11==8.6.0.163 tensorflow==2.12.*
 mkdir -p $CONDA_PREFIX/etc/conda/activate.d
 echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 echo 'export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-
-#get the repo
-mkdir repositories
-git clone https://github.com/umanema/ladi-vton-pipeline.git
-cd repositories/
-git submodule update --init --recursive
 ```
-
-## Installation
 
 ### Openpose
 
 ```
+# install build dependencies
+sudo apt-get -qq install -y libatlas-base-dev libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev opencl-headers ocl-icd-opencl-dev libviennacl-dev libboost-all-dev
+
 # install cmake
 sudo apt-get update
-sudo apt  install cmake
+sudo apt-get  install cmake
+sudo apt-ge install libopencv-dev python3-opencv
 
-conda  conda install -c anaconda libffi=3.3 #wsl libffi bug
-conda install -c conda-forge opencv
-sudo apt install caffe-cpu
+# when running on wsl
+conda  conda install -c anaconda libffi=3.3
 
-cd repositories/ladi-vton-pipeline/openpose/
+# install protobuf
+sudo apt-get install libprotobuf-dev protobuf-compiler
+
+cd ~/repositories/ladi-vton-pipeline/openpose/
 git submodule update --init --recursive --remote
 
 mkdir build/
 cd build/
 
-cmake -D USE_CUDNN=OFF -S ../ -B ./
 
-<!-- cmake \
+
+cmake -D USE_CUDNN=ON -D CUDNN_LIBRARY="$CUDNN_PATH/lib" -D CUDNN_INCLUDE="$CUDNN_PATH/include"  -S ../ -B ./
+make -j`nproc`
+```
+
+#### Useful cmake flags
+```
 -D BUILD_CAFFE=ON \
 -D BUILD_DOCS=OFF \
 -D BUILD_EXAMPLES=ON \
@@ -77,8 +88,8 @@ cmake -D USE_CUDNN=OFF -S ../ -B ./
 -D CMAKE_INSTALL_PREFIX=/usr/local \
 -D CUDA_ARCH=Auto \
 -D CUDA_HOST_COMPILER=/usr/bin/cc \
--D CUDA_TOOLKIT_ROOT_DIR=/home/nsynk/anaconda3/envs/mega-vton \
--D CUDA_CUDART_LIBRARY=/home/nsynk/anaconda3/envs/mega-vton/lib/libcudart.so \
+-D CUDA_TOOLKIT_ROOT_DIR= \
+-D CUDA_CUDART_LIBRARY= \
 -D CUDA_USE_STATIC_CUDA_RUNTIME=ON \
 -D DL_FRAMEWORK=CAFFE \
 -D DOWNLOAD_BODY_25_MODEL=ON \
@@ -91,21 +102,40 @@ cmake -D USE_CUDNN=OFF -S ../ -B ./
 -D OpenCV_DIR=/usr/lib/x86_64-linux-gnu/cmake/opencv4 \
 -D PROFILER_ENABLED=OFF \
 -D USE_CUDNN=OFF \
+-D CUDNN_LIBRARY= \
+-D CUDNN_INCLUDE=
 -D WITH_3D_RENDERER=OFF \
 -D WITH_CERES=OFF \
 -D WITH_EIGEN=NONE\
 -D WITH_FLIR_CAMERA=OFF \
 -D WITH_OPENCV_WITH_OPENGL=OFF \
--S ../ -B ./ -->
-
-make -j`nproc`
+-S ../ -B ./
 ```
 ### Human Parse
 
 ```
-python -m pip install nvidia-cudnn-cu11==8.6.0.163 tensorflow==2.12.*
-mkdir -p $CONDA_PREFIX/etc/conda/activate.d
-echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-echo 'export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install tf_slim
+pip install matplotlib
+pip install gdown
+sudo apt-get install unzip
+
+cd ~/repositories/CHIP_PGN
+gdown --id=1Mqpse5Gen4V4403wFEpv3w3JAsWw2uhk
+unzip CIHP_pgn.zip
+mv ./CIHP_pgn ./CIHP_PGN/checkpoint/
+```
+
+### Dense Pose
+
+```
+cd ~/repositories/ladi-vton-pipeline
+python -m pip install -e detectron2
+python -m pip install av
+pip install accelerate
+```
+
+### Ladi Vton
+```
+pip install diffusers==0.14.0 transformers==4.27.3 accelerate==0.18.0 clean-fid==0.1.35 torchmetrics[image]==0.11.4 wandb==0.14.0 matplotlib==3.7.2 tqdm xformers
 ```
