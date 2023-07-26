@@ -107,7 +107,7 @@ pip install --no-input torch torchvision torchaudio --index-url https://download
 pip install --no-input tf_slim matplotlib gdown
 
 sudo apt-get -qq install -y --no-upgrade unzip
-cd ~/repositories/ladi-vton-pipeline/CIHP_PGN
+cd $USER_HOME/repositories/ladi-vton-pipeline/CIHP_PGN
 CHECKPOINT=./checkpoint/CIHP_pgn
 if [[ -d "$CHECKPOINT" ]]; then
     echo "checkpoint CIHP_pgn already exist"
@@ -121,7 +121,7 @@ else
 fi
 
 #densepose
-cd ~/repositories/ladi-vton-pipeline
+cd $USER_HOME/repositories/ladi-vton-pipeline
 if pip list | grep detectron2 &> /dev/null; then
     echo "detectron2 is already installed"
 else
