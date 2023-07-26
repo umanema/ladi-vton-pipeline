@@ -1,11 +1,14 @@
 #!/bin/bash
+USER_HOME=$(eval echo ~${SUDO_USER})
+
 readonly resize_person_folder="auto-vton/resize/person"
 readonly resize_cloth_folder="auto-vton/resize/cloth"
 readonly destination_folder="ladi-vton/data/hd-viton/test"
 
-#source /home/nsynk/anaconda3/etc/profile.d/conda.sh
+source $USER_HOME/miniconda3/etc/profile.d/conda.sh
 
-#conda activate ladi-vton
+conda activate ladi-vton-pipeline
+
 rm -rf ../$destination_folder/agnostic-v3.2/*
 rm -rf ../$destination_folder/cloth/*
 rm -rf ../$destination_folder/cloth-mask/*

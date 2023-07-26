@@ -55,21 +55,21 @@ echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn._
 echo 'export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/cloth
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/person
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/cloth
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/person
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/result
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/cloth
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/person
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/cloth
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/person
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/result
 
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/agnostic-v3.2
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth-mask
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-densepose
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-agnostic-v3.2
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-v3
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_img
-mkdir $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_json
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/agnostic-v3.2
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth-mask
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-densepose
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-agnostic-v3.2
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-v3
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_img
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_json
 
 #openpose
 sudo apt-get update
@@ -81,18 +81,9 @@ ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $CONDA_PREFIX/lib/libstdc++.so.6
 cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
 # git submodule update --init --recursive --remote
 
-BUILD=./build
-if [[ -f "$BUILD" ]]; then
-    mkdir build/
-fi
+mkdir build/
 cd build/
 
-# # if grep -qi microsoft /proc/version; then
-# #   echo "Ubuntu on Windows"
-# #   conda install -y -c anaconda libffi=3.3
-# # else
-# #   echo "native Linux"
-# # fi
 BIN=./examples/openpose/openpose.bin
 if [[ -f "$BIN" ]]; then
     echo "openpose is already built"
@@ -108,16 +99,16 @@ pip install --no-input tf_slim matplotlib gdown
 
 sudo apt-get -qq install -y --no-upgrade unzip
 cd $USER_HOME/repositories/ladi-vton-pipeline/CIHP_PGN
-CHECKPOINT=./checkpoint/CIHP_pgn
+CHECKPOINT=./checkpoint/CIHP_pgn/
 if [[ -d "$CHECKPOINT" ]]; then
     echo "checkpoint CIHP_pgn already exist"
 else
     gdown --id "1Mqpse5Gen4V4403wFEpv3w3JAsWw2uhk"
     unzip CIHP_pgn.zip
-    mkdir checkpoint/CIHP_pgn
-    mv ./CIHP_pgn/* ./checkpoint/CIHP_pgn/
-    rm ./CIHP_pgn.zip
-    rm -d ./CIHP_pgn
+    sudo mkdir -p ./checkpoint/CIHP_pgn
+    sudo mv ./CIHP_pgn/* ./checkpoint/CIHP_pgn/
+    sudo rm -f ./CIHP_pgn.zip
+    sudo rm -rf ./CIHP_pgn
 fi
 
 #densepose
