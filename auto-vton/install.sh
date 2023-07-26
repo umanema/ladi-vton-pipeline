@@ -25,9 +25,6 @@ else
     conda create -n ladi-vton-pipeline python=3.10 -y
     conda activate ladi-vton-pipeline
 fi
-
-
-
 #install carvekit before everything else
 if python -c "import carvekit" &> /dev/null; then
     echo 'carvekit is already installed'
@@ -35,8 +32,6 @@ else
     echo 'installing carvekit'
     pip install --no-input carvekit
 fi
-
-
 #install cuda and cudnn
 sudo apt-get install linux-headers-$(nsynk -r)
 sudo apt-key del 7fa2af80
@@ -91,14 +86,15 @@ else
     echo "building openpose"
     sudo cmake -D USE_CUDNN=ON -D CUDNN_LIBRARY="$CUDNN_PATH/lib" -D CUDNN_INCLUDE="$CUDNN_PATH/include"  -S ../ -B ./
     sudo make -j`nproc`
+    echo "openpose finished building"
 fi
-
 #humanparse
 pip install --no-input torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 pip install --no-input tf_slim matplotlib gdown
 
 sudo apt-get -qq install -y --no-upgrade unzip
 cd $USER_HOME/repositories/ladi-vton-pipeline/CIHP_PGN
+
 CHECKPOINT=./checkpoint/CIHP_pgn/
 if [[ -d "$CHECKPOINT" ]]; then
     echo "checkpoint CIHP_pgn already exist"
@@ -110,7 +106,6 @@ else
     sudo rm -f ./CIHP_pgn.zip
     sudo rm -rf ./CIHP_pgn
 fi
-
 #densepose
 cd $USER_HOME/repositories/ladi-vton-pipeline
 if pip list | grep detectron2 &> /dev/null; then
@@ -118,7 +113,6 @@ if pip list | grep detectron2 &> /dev/null; then
 else
     sudo $CONDA_PREFIX/bin/python -m pip install -e detectron2
 fi
-
 python -m pip install --no-input av
 pip install --no-input accelerate
 
