@@ -1,7 +1,7 @@
 #!/bin/bash
 USER_HOME=$(eval echo ~${SUDO_USER})
 cd $USER_HOME/repositories/ladi-vton-pipeline
-sudo git submodule update --init --recursive --remote
+sudo git submodule update --init --recursive
 
 cd $USER_HOME
 
