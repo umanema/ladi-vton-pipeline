@@ -5,6 +5,25 @@ sudo git submodule update --init --recursive
 
 cd $USER_HOME
 
+#create folder structure
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/cloth
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/person
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/cloth
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/person
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/result
+
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/agnostic-v3.2
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth-mask
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-densepose
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-agnostic-v3.2
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-v3
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_img
+sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_json
+sudo touch $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test_pairs.txt
+echo "person.jpg cloth.jpg" | sudo tee $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test_pairs.txt
+
 #install miniconda
 MINICONDA=$USER_HOME/miniconda.sh
 if [[ -f "$MINICONDA" ]]; then
@@ -49,22 +68,6 @@ mkdir -p $CONDA_PREFIX/etc/conda/activate.d
 echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 echo 'export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/cloth
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/person
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/cloth
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/person
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/result
-
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/agnostic-v3.2
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth-mask
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-densepose
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-agnostic-v3.2
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-v3
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_img
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_json
 
 #openpose
 sudo apt-get update
