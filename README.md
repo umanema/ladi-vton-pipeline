@@ -1,5 +1,5 @@
 # ladi-vton-pipeline
-The main purpose of the repository is to collect all the tools you need to use Ladi-Vton repository with custom input.
+The main purpose of the repository is to collect all the tools you need to use [LaDI-VTON](https://github.com/miccunifi/ladi-vton.git) repository with custom input.
 
 The pipeline is tested on ubuntu 20.04 and 22.04 with cuda capable GPU. Important to note that some of the repositories used in this project won't work anywhere except linux. Also I'm not sure how all of it gonna work withouth GPU support, but theoretically it could.
 
