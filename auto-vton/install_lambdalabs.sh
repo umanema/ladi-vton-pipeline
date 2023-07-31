@@ -51,7 +51,7 @@ else
     conda create -n ladi-vton-pipeline python=3.10 -y
     conda activate ladi-vton-pipeline
 fi
-#install carvekit before everything else
+#install carvekit before everything else because it will have conflicts with pytorch version we are going to install later
 if python -c "import carvekit" &> /dev/null; then
     echo 'carvekit is already installed'
 else
@@ -76,11 +76,12 @@ echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn._
 echo 'export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 
-#openpose
+#build openpose
+#start with dependencies
 sudo apt-get update
 sudo apt-get -qq install -y --no-upgrade libatlas-base-dev libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev opencl-headers ocl-icd-opencl-dev libviennacl-dev libboost-all-dev libopencv-dev python3-opencv cmake
 
-#anaconda might have issues with std libs so I link it to the one installed with apt
+#miniconda might have issues with std libs so I link it to the one installed with apt
 ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $CONDA_PREFIX/lib/libstdc++.so.6
 
 cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
@@ -98,13 +99,13 @@ else
     sudo make -j`nproc`
     echo "openpose finished building"
 fi
-#humanparse
+#prepare CIHP_pgn repo for human parsing
 pip install --no-input torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 pip install --no-input tf_slim matplotlib gdown
 
 sudo apt-get -qq install -y --no-upgrade unzip
 cd $USER_HOME/repositories/ladi-vton-pipeline/CIHP_PGN
-
+#donwload weights
 CHECKPOINT=./checkpoint/CIHP_pgn/
 if [[ -d "$CHECKPOINT" ]]; then
     echo "checkpoint CIHP_pgn already exist"
@@ -116,7 +117,7 @@ else
     sudo rm -f ./CIHP_pgn.zip
     sudo rm -rf ./CIHP_pgn
 fi
-#densepose
+#install densepose
 cd $USER_HOME/repositories/ladi-vton-pipeline
 if pip list | grep detectron2 &> /dev/null; then
     echo "detectron2 is already installed"
@@ -126,5 +127,5 @@ fi
 python -m pip install --no-input av
 pip install --no-input accelerate
 
-#ladi-vton
+#install ladi-vton dependencies
 pip install --no-input diffusers==0.14.0 transformers==4.27.3 accelerate==0.18.0 clean-fid==0.1.35 torchmetrics[image]==0.11.4 wandb==0.14.0 matplotlib==3.7.2 tqdm xformers
