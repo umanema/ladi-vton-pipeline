@@ -14,7 +14,7 @@ git submodule update --init --recursive
 ```
 You can either use the installation script 
 ```
-cd ~/repositories/ladi-vton-pipeline/auto-vton
+cd ./auto-vton
 bash install.sh
 ```
 Or repeat every step yourself with CLI in case you want to do set any tool differently or when something doesn't work with the script, that I can see happening.
@@ -30,6 +30,17 @@ Installation script assumes that the repository is cloned to
 ```
 If you want it to be in a different location you should change the scripts a little bit or do installation manually.
 
+#### Openpose models
+Occasionally openpose models could not be downloaded from original source as described [here](https://github.com/CMU-Perceptual-Computing-Lab/openpose/issues/1602). In that case you will get zero keypoints on the resulted picture in .ladi-vton/data/hd-viton/test/openpose_img/person/person_rendered.png and .ladi-vton/data/hd-viton/test/openpose_json/person_keypoints.json. For that reason there is a script that shoudl download all the models from GDrive.
+```
+cd ./auto-vton
+bash install_openpose_models.sh
+```
+When openpose wasn't built because of that issue you can do
+```
+cd ./auto-vton
+bash rebuild_openpose.sh
+```
 ## Running
 Put the photo of a model into
 ```
@@ -41,7 +52,8 @@ Put the photo of a cloth into
 ```
 Run 
 ```
-bash ./auto-vton/auto-vton.sh
+cd ./auto-vton
+bash auto-vton.sh
 ```
 If everything runs smooth you should find the resulted picture here
 ```
