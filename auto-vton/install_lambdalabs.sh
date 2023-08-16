@@ -5,6 +5,7 @@ sudo rm -f /etc/apt/sources.list.d/{graphics,nvidia,cuda}* && \
 dpkg -l | \
 awk '/cuda|lib(accinj64|cu(blas|dart|dnn|fft|inj|pti|rand|solver|sparse)|magma|nccl|npp|nv[^p])|nv(idia|ml)|tensor(flow|board)|torch/ { print $2 }' | \
 sudo xargs -or apt -y remove --purge
+sudo apt-get -qq autoremove --yes
 
 USER_HOME=$(eval echo ~${SUDO_USER})
 cd $USER_HOME/repositories/ladi-vton-pipeline
