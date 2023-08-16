@@ -52,7 +52,7 @@ else
     pip install --no-input carvekit
 fi
 #install cuda and cudnn
-sudo apt-get install linux-headers-$(nsynk -r)
+sudo apt-get install linux-headers-`uname -r`
 sudo apt-key del 7fa2af80
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
@@ -125,4 +125,4 @@ pip install --no-input diffusers==0.14.0 transformers==4.27.3 accelerate==0.18.0
 
 #give permissions to write into input folders
 #chmod -R a+rwX
-chmown "$(whoami)" .
+chown "$(whoami)" .
