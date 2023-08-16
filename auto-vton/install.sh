@@ -122,3 +122,7 @@ pip install --no-input accelerate
 
 #install ladi-vton dependencies
 pip install --no-input diffusers==0.14.0 transformers==4.27.3 accelerate==0.18.0 clean-fid==0.1.35 torchmetrics[image]==0.11.4 wandb==0.14.0 matplotlib==3.7.2 tqdm xformers
+
+#give permissions to write into input folders
+#chmod -R a+rwX
+chmown "$(whoami)" .

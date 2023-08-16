@@ -8,7 +8,7 @@ src_folder_cloth = "./input/cloth"
 dest_folder_person = "./resize/person"
 dest_folder_cloth = "./resize/cloth"
 
-valid_images = [".jpg",".png"]
+valid_images = [".jpg",".png",".jpeg"]
 
 height = 1024
 width = 768
