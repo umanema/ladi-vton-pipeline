@@ -90,11 +90,21 @@ cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
 
 mkdir build/
 cd build/
+sudo apt-get -qq install -y --no-upgrade unzip
+pip install --no-input gdown
 
 BIN=./examples/openpose/openpose.bin
 if [[ -f "$BIN" ]]; then
     echo "openpose is already built"
 else
+    echo "downloading openpose models"
+    
+    cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
+
+    #download openpose models from GDrive
+    gdown --id "1QCSxJZpnWvM00hx49CJ2zky7PWGzpcEh"
+    sudo unzip -o models.zip
+
     echo "building openpose"
     sudo cmake -D USE_CUDNN=ON -D CUDNN_LIBRARY="$CUDNN_PATH/lib" -D CUDNN_INCLUDE="$CUDNN_PATH/include"  -S ../ -B ./
     sudo make -j`nproc`
@@ -102,9 +112,9 @@ else
 fi
 #prepare CIHP_pgn repo for human parsing
 pip install --no-input torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip install --no-input tf_slim matplotlib gdown
+pip install --no-input tf_slim matplotlib
 
-sudo apt-get -qq install -y --no-upgrade unzip
+
 cd $USER_HOME/repositories/ladi-vton-pipeline/CIHP_PGN
 #donwload weights
 CHECKPOINT=./checkpoint/CIHP_pgn/
