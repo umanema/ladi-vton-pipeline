@@ -2,6 +2,8 @@
 
 USER_HOME=$(eval echo ~${SUDO_USER})
 cd $USER_HOME
+source $USER_HOME/miniconda3/etc/profile.d/conda.sh
+conda activate ladi-vton-pipeline
 
 #create folder structure
 sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/cloth
