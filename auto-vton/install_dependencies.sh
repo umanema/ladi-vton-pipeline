@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #remove lambda stack
-sudo rm -f /etc/apt/sources.list.d/{graphics,nvidia,cuda}* && \
-dpkg -l | \
-awk '/cuda|lib(accinj64|cu(blas|dart|dnn|fft|inj|pti|rand|solver|sparse)|magma|nccl|npp|nv[^p])|nv(idia|ml)|tensor(flow|board)|torch/ { print $2 }' | \
-sudo xargs -or apt -y remove --purge
-sudo apt-get -qq autoremove --yes
+# sudo rm -f /etc/apt/sources.list.d/{graphics,nvidia,cuda}* && \
+# dpkg -l | \
+# awk '/cuda|lib(accinj64|cu(blas|dart|dnn|fft|inj|pti|rand|solver|sparse)|magma|nccl|npp|nv[^p])|nv(idia|ml)|tensor(flow|board)|torch/ { print $2 }' | \
+# sudo xargs -or apt -y remove --purge
+# sudo apt-get -qq autoremove --yes
 
 USER_HOME=$(eval echo ~${SUDO_USER})
 cd $USER_HOME/repositories/ladi-vton-pipeline
@@ -76,3 +76,23 @@ mkdir -p $CONDA_PREFIX/etc/conda/activate.d
 echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 echo 'export LD_LIBRARY_PATH=$CONDA_PREFIX/lib/:$CUDNN_PATH/lib:$LD_LIBRARY_PATH' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
+
+sudo apt-get -qq install -y --no-upgrade unzip
+pip install --no-input gdown
+
+#openpose dependencies
+sudo apt-get update
+sudo apt-get -qq install -y --no-upgrade libatlas-base-dev libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev opencl-headers ocl-icd-opencl-dev libviennacl-dev libboost-all-dev libopencv-dev python3-opencv cmake
+
+#miniconda might have issues with std libs so I link it to the one installed with apt
+ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $CONDA_PREFIX/lib/libstdc++.so.6
+
+#prepare CIHP_pgn repo for human parsing
+pip install --no-input torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install --no-input tf_slim matplotlib
+
+python -m pip install --no-input av
+pip install --no-input accelerate
+
+#install ladi-vton dependencies
+pip install --no-input diffusers==0.14.0 transformers==4.27.3 accelerate==0.18.0 clean-fid==0.1.35 torchmetrics[image]==0.11.4 wandb==0.14.0 matplotlib==3.7.2 tqdm xformers
