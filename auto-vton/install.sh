@@ -54,7 +54,7 @@ fi
 #install cuda and cudnn
 sudo apt-get -qq remove --purge '^nvidia-.*'
 sudo apt-get -qq autoremove --yes
-sudo apt-get install linux-headers-`uname -r`
+sudo apt-get install linux-headers-$(uname -r)
 sudo apt-key del 7fa2af80
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb

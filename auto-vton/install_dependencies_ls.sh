@@ -8,29 +8,6 @@ sudo xargs -or apt -y remove --purge
 sudo apt-get -qq autoremove --yes
 
 USER_HOME=$(eval echo ~${SUDO_USER})
-cd $USER_HOME/repositories/ladi-vton-pipeline
-sudo git submodule update --init --recursive
-
-cd $USER_HOME
-
-#create folder structure
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/cloth
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/input/person
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/cloth
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/resize/person
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/auto-vton/result
-
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/agnostic-v3.2
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/cloth-mask
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-densepose
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-agnostic-v3.2
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/image-parse-v3
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_img
-sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test/openpose_json
-sudo touch $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test_pairs.txt
-echo "person.jpg cloth.jpg" | sudo tee $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test_pairs.txt
 
 #install miniconda
 MINICONDA=$USER_HOME/miniconda.sh
@@ -60,9 +37,9 @@ else
     pip install --no-input carvekit
 fi
 #install cuda and cudnn
-sudo apt-get install linux-headers-`uname -r`
+sudo apt-get install linux-headers-$(uname -r)
 sudo apt-key del 7fa2af80
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
 sudo apt-get update
 
