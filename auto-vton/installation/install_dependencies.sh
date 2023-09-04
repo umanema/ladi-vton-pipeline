@@ -62,7 +62,9 @@ sudo apt-get update
 sudo apt-get -qq install -y --no-upgrade libatlas-base-dev libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev opencl-headers ocl-icd-opencl-dev libviennacl-dev libboost-all-dev libopencv-dev python3-opencv cmake
 
 #miniconda might have issues with std libs so I link it to the one installed with apt
-ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $CONDA_PREFIX/lib/libstdc++.so.6
+sudo rm $CONDA_PREFIX/lib/libtinfo*
+sudo ln -s /lib/x86_64-linux-gnu/libtinfo.so.6 $CONDA_PREFIX/lib/libtinfo.so.6
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $CONDA_PREFIX/lib/libstdc++.so.6
 
 #prepare CIHP_pgn repo for human parsing
 pip install --no-input torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
