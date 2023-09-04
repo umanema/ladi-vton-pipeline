@@ -24,6 +24,10 @@ sudo mkdir -p $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton
 sudo touch $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test_pairs.txt
 echo "person.jpg cloth.jpg" | sudo tee $USER_HOME/repositories/ladi-vton-pipeline/ladi-vton/data/hd-viton/test_pairs.txt
 
+#get submodules
+cd $USER_HOME/repositories/ladi-vton-pipeline
+git submodule update --init --recursive
+
 #openpose
 cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
 mkdir build/
