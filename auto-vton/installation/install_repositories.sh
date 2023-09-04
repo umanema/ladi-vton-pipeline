@@ -26,21 +26,23 @@ echo "person.jpg cloth.jpg" | sudo tee $USER_HOME/repositories/ladi-vton-pipelin
 
 #openpose
 cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
-
 mkdir build/
+
+CAFFE=./models/pose/body_25/pose_iter_584000.caffemodel
+if [[ -f "$CAFFE" ]]; then
+    echo "openpose models are already downloaded"
+else
+    echo "downloading openpose models"
+    cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
+    #download openpose models from GDrive
+    gdown --id "1QCSxJZpnWvM00hx49CJ2zky7PWGzpcEh"
+    sudo unzip -o models.zip
+fi
 
 BIN=./examples/openpose/openpose.bin
 if [[ -f "$BIN" ]]; then
     echo "openpose is already built"
 else
-    echo "downloading openpose models"
-
-    cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
-
-    #download openpose models from GDrive
-    gdown --id "1QCSxJZpnWvM00hx49CJ2zky7PWGzpcEh"
-    sudo unzip -o models.zip
-
     echo "building openpose"
     cd $USER_HOME/repositories/ladi-vton-pipeline/openpose/build
     sudo cmake -D USE_CUDNN=ON -D CUDNN_LIBRARY="$CUDNN_PATH/lib" -D CUDNN_INCLUDE="$CUDNN_PATH/include"  -S ../ -B ./

@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #remove lambda stack
-sudo rm -f /etc/apt/sources.list.d/{graphics,nvidia,cuda}* && \
-dpkg -l | \
-awk '/cuda|lib(accinj64|cu(blas|dart|dnn|fft|inj|pti|rand|solver|sparse)|magma|nccl|npp|nv[^p])|nv(idia|ml)|tensor(flow|board)|torch/ { print $2 }' | \
-sudo xargs -or apt -y remove --purge
-sudo apt-get -qq autoremove --yes
+# sudo rm -f /etc/apt/sources.list.d/{graphics,nvidia,cuda}* && \
+# dpkg -l | \
+# awk '/cuda|lib(accinj64|cu(blas|dart|dnn|fft|inj|pti|rand|solver|sparse)|magma|nccl|npp|nv[^p])|nv(idia|ml)|tensor(flow|board)|torch/ { print $2 }' | \
+# sudo xargs -or apt -y remove --purge
+# sudo apt-get -qq autoremove --yes
 
 USER_HOME=$(eval echo ~${SUDO_USER})
 
@@ -37,13 +37,13 @@ else
     pip install --no-input carvekit
 fi
 #install cuda and cudnn
-sudo apt-get install linux-headers-$(uname -r)
-sudo apt-key del 7fa2af80
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
-sudo apt-get update
+# sudo apt-get install linux-headers-$(uname -r)
+# sudo apt-key del 7fa2af80
+# wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+# sudo dpkg -i cuda-keyring_1.1-1_all.deb
+# sudo apt-get update
 
-sudo apt-get -qq install --yes --no-upgrade cuda-11-8
+# sudo apt-get -qq install --yes --no-upgrade cuda-11-8
 
 #install tensorflow
 conda install -y -c "nvidia/label/cuda-11.8.0" cuda-toolkit
