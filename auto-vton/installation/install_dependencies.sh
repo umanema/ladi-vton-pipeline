@@ -29,6 +29,11 @@ else
     conda create -n ladi-vton-pipeline python=3.10 -y
     conda activate ladi-vton-pipeline
 fi
+
+#get submodules
+cd $USER_HOME/repositories/ladi-vton-pipeline
+git submodule update --init --recursive
+
 #install carvekit before everything else because it will have conflicts with pytorch version we are going to install later
 if python -c "import carvekit" &> /dev/null; then
     echo 'carvekit is already installed'

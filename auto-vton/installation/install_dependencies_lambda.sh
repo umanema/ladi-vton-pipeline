@@ -14,7 +14,7 @@ MINICONDA=$USER_HOME/miniconda.sh
 if [[ -f "$MINICONDA" ]]; then
     echo "miniconda is already installed on the system"
 else
-    echo "installing miniconda" 
+    echo "installing miniconda"
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $USER_HOME/miniconda.sh
     sh $USER_HOME/miniconda.sh -b -p $USER_HOME/miniconda3 -u
     eval "$($USER_HOME/miniconda3/bin/conda shell.bash hook)"
@@ -29,6 +29,11 @@ else
     conda create -n ladi-vton-pipeline python=3.10 -y
     conda activate ladi-vton-pipeline
 fi
+
+#get submodules
+cd $USER_HOME/repositories/ladi-vton-pipeline
+git submodule update --init --recursive
+
 #install carvekit before everything else because it will have conflicts with pytorch version we are going to install later
 if python -c "import carvekit" &> /dev/null; then
     echo 'carvekit is already installed'
@@ -62,9 +67,9 @@ sudo apt-get update
 sudo apt-get -qq install -y --no-upgrade libatlas-base-dev libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev opencl-headers ocl-icd-opencl-dev libviennacl-dev libboost-all-dev libopencv-dev python3-opencv cmake
 
 #miniconda might have issues with std libs so I link it to the one installed with apt
-sudo rm $CONDA_PREFIX/lib/libtinfo*
-sudo ln -s /lib/x86_64-linux-gnu/libtinfo.so.6 $CONDA_PREFIX/lib/libtinfo.so.6
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $CONDA_PREFIX/lib/libstdc++.so.6
+# sudo rm $CONDA_PREFIX/lib/libtinfo*
+# sudo ln -s /lib/x86_64-linux-gnu/libtinfo.so.6 $CONDA_PREFIX/lib/libtinfo.so.6
+# sudo ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $CONDA_PREFIX/lib/libstdc++.so.6
 
 #prepare CIHP_pgn repo for human parsing
 pip install --no-input torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
