@@ -35,7 +35,7 @@ else
     echo "downloading openpose models"
     cd $USER_HOME/repositories/ladi-vton-pipeline/openpose
     #download openpose models from GDrive
-    gdown --id "1QCSxJZpnWvM00hx49CJ2zky7PWGzpcEh"
+    gdown "1RosQj4dV6-EBniev8sz0V5ngW1FTnW9U"
     sudo unzip -o models.zip
 fi
 
