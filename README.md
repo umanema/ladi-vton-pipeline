@@ -1,7 +1,7 @@
 # ladi-vton-pipeline
 The main purpose of the repository is to prepare preprocessing repositories you need to run [LaDI-VTON](https://github.com/miccunifi/ladi-vton.git) with custom input.
 
-The pipeline is tested on Ubuntu 20.04 and 22.04 with cuda capable GPU. Important to note that some of the repositories used in this project won't work anywhere except linux. Also I'm not sure how all of it's going work withouth GPU support. Theoretically it can.
+The pipeline is tested on Ubuntu 20.04 and 22.04 with cuda capable GPU. Important to note that some of the repositories used in this project won't work anywhere except linux. Also I'm not sure how all of it's going to work withouth GPU support. Theoretically it can.
 
 ## Installation
 
